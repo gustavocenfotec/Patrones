@@ -1,8 +1,11 @@
 package View.ViewPersonas.Profesores;
 
+import ValidacionesUI.ValidacionesUI;
 import View.Presentacion.MenuGeneralUI;
+import ValidacionesUI.Respuesta;
 
 
+import View.ViewPersonas.Estudiante.menuEstudiantesUI;
 import controller.Personas.ProfesorController;
 import model.Personas.ProfesorModel;
 import view.ConsoleView;
@@ -68,9 +71,19 @@ public class menuProfesoresUI extends JFrame{
                 String departamentoEscrito=departamento.getText();
                 boolean estado=true;
 
+                Respuesta respuesta;
+                ValidacionesUI val= new ValidacionesUI();
+                respuesta=val.validacionProfesor(nombreEscrito,identificacionEscrita,correoEscrito,departamentoEscrito);
+
+                if(respuesta.isRespuestaAB()){
+
                 ProfesorModel profesorAgregado=new ProfesorModel(nombreEscrito,identificacionEscrita,correoEscrito,estado,departamentoEscrito);
                 profesorController.agregarProfesor(profesorAgregado);
-                crearTabla();
+                JOptionPane.showMessageDialog(menuProfesoresUI.this,"El profesor con id:"+identificacionEscrita+"SE agrego al sistema ");
+                crearTabla();}
+                else {
+                JOptionPane.showMessageDialog(menuProfesoresUI.this,"El profesor con id:"+identificacionEscrita+" no se puede agregar al sistema por esta razon: " +respuesta.getRespuestaEscrita());
+            }
             }
         });
 
@@ -95,11 +108,20 @@ public class menuProfesoresUI extends JFrame{
                 }
                 else{
                     int id=profesorActualizado.getId();
+                    Respuesta respuesta;
+                    ValidacionesUI val= new ValidacionesUI();
+                    respuesta=val.validacionProfesor(nombreEscrito,identificacionEscrita,correoEscrito,departamentoEscrito);
+
+                    if(respuesta.isRespuestaAB()){
                     profesorActualizado=new ProfesorModel(id,nombreEscrito,identificacionEscrita,correoEscrito,estado,departamentoEscrito);
                     profesorController.actualizarProfesor(profesorActualizado);
                     profesorActualizado=profesorController.buscarProfesorIdentificacion(identificacionEscrita);
                     JOptionPane.showMessageDialog(menuProfesoresUI.this,"El profesor con identificacion:"+profesorActualizado.getIdentificacion()+" fue actualizado en el Sistema");
-                    crearTablaBusqueda(profesorActualizado);
+                    crearTablaBusqueda(profesorActualizado);}
+                    else {
+                        JOptionPane.showMessageDialog(menuProfesoresUI.this,"El profesor con id:"+identificacionEscrita+" no se puede agregar al sistema por esta razon: " +respuesta.getRespuestaEscrita());
+
+                    }
                 }
 
             }

@@ -1,6 +1,9 @@
 package View.ViewsAdministrativo.Grupo;
 
+import ValidacionesUI.Respuesta;
+import ValidacionesUI.ValidacionesUI;
 import View.Presentacion.MenuGeneralUI;
+import View.ViewsAdministrativo.Curso.menuCursosUI;
 import controller.Administrativos.GrupoController;
 
 import model.Administrativos.GrupoModel;
@@ -63,10 +66,21 @@ public class menuGruposUI extends JFrame{
                 String descripcionEscrito=descripcion.getText();
                 boolean estado=true;
 
+                Respuesta respuesta;
+                ValidacionesUI val= new ValidacionesUI();
+                respuesta=val.validacionGrupo(nombreEscrito,descripcionEscrito);
+
+                if(respuesta.isRespuestaAB()) {
 
                 GrupoModel grupoAgregado=new GrupoModel(nombreEscrito,descripcionEscrito,estado);
                 grupoController.agregarGrupo(grupoAgregado);
-                crearTabla();
+                    JOptionPane.showMessageDialog(menuGruposUI.this,"El grupo con nombre:"+nombreEscrito+"  fue agregado en el Sistema");
+
+                    crearTabla();}
+                else {
+                    JOptionPane.showMessageDialog(menuGruposUI.this,"El grupo con nombre:"+nombreEscrito+" NO fue agregado en el Sistema por esta razon: "+respuesta.getRespuestaEscrita());
+
+                }
             }
         });
 
@@ -93,11 +107,21 @@ public class menuGruposUI extends JFrame{
                 }
                 else{
 
+                    Respuesta respuesta;
+                    ValidacionesUI val= new ValidacionesUI();
+                    respuesta=val.validacionGrupo(nombreEscrito,descripcionEscrito);
+
+                    if(respuesta.isRespuestaAB()) {
+
                     grupoActualizado=new GrupoModel(idEscrita,nombreEscrito,descripcionEscrito,estado);
                     grupoController.actualizarGrupo(grupoActualizado);
                     grupoActualizado=grupoController.buscarGrupoID(idEscrita);
                     JOptionPane.showMessageDialog(menuGruposUI.this,"El grupo con id:"+grupoActualizado.getId()+" fue actualizado en el Sistema");
-                    crearTablaBusqueda(grupoActualizado);
+                    crearTablaBusqueda(grupoActualizado);}
+                    else {
+                        JOptionPane.showMessageDialog(menuGruposUI.this,"El grupo con nombre:"+nombreEscrito+" NO fue agregado en el Sistema por esta razon: "+respuesta.getRespuestaEscrita());
+
+                    }
 
                 }
 

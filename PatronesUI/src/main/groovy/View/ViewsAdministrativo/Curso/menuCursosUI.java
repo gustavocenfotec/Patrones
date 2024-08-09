@@ -1,8 +1,11 @@
 package View.ViewsAdministrativo.Curso;
 
+import ValidacionesUI.Respuesta;
+import ValidacionesUI.ValidacionesUI;
 import View.Presentacion.MenuGeneralUI;
 
 
+import View.ViewPersonas.Estudiante.menuEstudiantesUI;
 import controller.Administrativos.CursoController;
 import model.Administrativos.CursoModel;
 import view.ConsoleView;
@@ -66,11 +69,22 @@ public class menuCursosUI extends JFrame{
                 String nombreEscrito=nombre.getText() ;
                 String descripcionEscrito=descripcion.getText();
                 boolean estado=true;
+                Respuesta respuesta;
+                ValidacionesUI val= new ValidacionesUI();
+                respuesta=val.validacionCurso(nombreEscrito,descripcionEscrito);
 
+                if(respuesta.isRespuestaAB()) {
 
-                CursoModel cursoAgregado=new CursoModel(nombreEscrito,descripcionEscrito,estado);
-                cursoController.agregarCurso(cursoAgregado);
-                crearTabla();
+                    CursoModel cursoAgregado = new CursoModel(nombreEscrito, descripcionEscrito, estado);
+                    cursoController.agregarCurso(cursoAgregado);
+                    JOptionPane.showMessageDialog(menuCursosUI.this,"El curso con nombre:"+nombreEscrito+"  fue creadp en el Sistema ");
+
+                    crearTabla();
+                }
+                else {
+                    JOptionPane.showMessageDialog(menuCursosUI.this,"El curso con nombre:"+nombreEscrito+" NO fue actualizado en el Sistema por esta razon: "+respuesta.getRespuestaEscrita());
+
+                }
 
             }
         });
@@ -98,11 +112,21 @@ public class menuCursosUI extends JFrame{
                 }
                 else{
 
+                    Respuesta respuesta;
+                    ValidacionesUI val= new ValidacionesUI();
+                    respuesta=val.validacionCurso(nombreEscrito,descripcionEscrito);
+
+                    if(respuesta.isRespuestaAB()) {
+
                     cursoActualizado=new CursoModel(idEscrita,nombreEscrito,descripcionEscrito,estado);
                     cursoController.actualizarCurso(cursoActualizado);
                     cursoActualizado=cursoController.buscarCursoID(idEscrita);
                     JOptionPane.showMessageDialog(menuCursosUI.this,"El curso con id:"+cursoActualizado.getId()+" fue actualizado en el Sistema");
-                    crearTablaBusqueda(cursoActualizado);
+                    crearTablaBusqueda(cursoActualizado);}else {
+                        JOptionPane.showMessageDialog(menuCursosUI.this,"El curso con id: "+cursoActualizado.getId()+" NO fue actualizado en el Sistema por esta razon: "+respuesta.getRespuestaEscrita());
+
+                    }
+
 
                 }
 

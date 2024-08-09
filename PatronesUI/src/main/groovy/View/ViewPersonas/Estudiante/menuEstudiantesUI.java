@@ -1,5 +1,7 @@
 package View.ViewPersonas.Estudiante;
 
+import ValidacionesUI.ValidacionesUI;
+import ValidacionesUI.Respuesta;
 import controller.Personas.EstudiantesController;
 import model.Personas.EstudianteModel;
 import view.ConsoleView;
@@ -7,6 +9,7 @@ import view.ConsoleView;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
@@ -31,6 +34,12 @@ public class menuEstudiantesUI extends JFrame{
     private JTextField mes;
     private JTextField dia;
     private int dialogButton;
+
+
+
+
+    public menuEstudiantesUI() throws HeadlessException {
+    }
 
     public menuEstudiantesUI(int seleccion) {
 
@@ -67,14 +76,21 @@ public class menuEstudiantesUI extends JFrame{
                 String diaEscrito=dia.getText();
                 boolean estado=true;
 
-                String nacimiento=(annoEscrito+"-"+mesEscrito+"-"+diaEscrito);
 
-                Date fecha_nacimiento=Date.valueOf(nacimiento);
-                EstudianteModel estudianteAgregado=new EstudianteModel(nombreEscrito,identificacionEscrita,correoEscrito,estado,fecha_nacimiento);
-                estudiantesController.agregarEstudiante(estudianteAgregado);
-                crearTabla();
+                Respuesta respuesta;
+                ValidacionesUI val= new ValidacionesUI();
+                respuesta=val.validacionEstudiante(nombreEscrito,identificacionEscrita,correoEscrito,annoEscrito,mesEscrito,diaEscrito);
 
+                if(respuesta.isRespuestaAB()) {
+                    String nacimiento = (annoEscrito + "-" + mesEscrito + "-" + diaEscrito);
 
+                    Date fecha_nacimiento = Date.valueOf(nacimiento);
+                    EstudianteModel estudianteAgregado = new EstudianteModel(nombreEscrito, identificacionEscrita, correoEscrito, estado, fecha_nacimiento);
+                    estudiantesController.agregarEstudiante(estudianteAgregado);
+                    crearTabla();
+                }else {
+                    JOptionPane.showMessageDialog(menuEstudiantesUI.this,"El estudiante con id:"+identificacionEscrita+" no se puede agregar al sistema por esta razon: " +respuesta.getRespuestaEscrita());
+                }
             }
         });
         modificarButton.addActionListener(new ActionListener() {
@@ -95,6 +111,11 @@ public class menuEstudiantesUI extends JFrame{
                     JOptionPane.showMessageDialog(menuEstudiantesUI.this,"El estudiante con id:"+identificacionEscrita+" no existe en el sistema");
                 }
                 else{
+                    Respuesta respuesta;
+                    ValidacionesUI val= new ValidacionesUI();
+                    respuesta=val.validacionEstudiante(nombreEscrito,identificacionEscrita,correoEscrito,annoEscrito,mesEscrito,diaEscrito);
+
+                    if(respuesta.isRespuestaAB()) {
                     String nacimiento=(annoEscrito+"-"+mesEscrito+"-"+diaEscrito);
 
                     Date fecha_nacimiento=Date.valueOf(nacimiento);
@@ -103,7 +124,10 @@ public class menuEstudiantesUI extends JFrame{
                     estudiantesController.actualizarEstudiante(estudianteActualizado);
                     estudianteActualizado=estudiantesController.buscarEstudianteIdentificacion(identificacionEscrita);
                     JOptionPane.showMessageDialog(menuEstudiantesUI.this,"El estudiante con identificacion:"+estudianteActualizado.getIdentificacion()+" fue actualizado en el Sistema");
-                    crearTabla();
+                    crearTabla();}
+                    else{
+                        JOptionPane.showMessageDialog(menuEstudiantesUI.this,"El estudiante con identificacion:"+estudianteActualizado.getIdentificacion()+" NO fue actualizado en el Sistema por esta razon: "+respuesta.getRespuestaEscrita());
+                    }
 
                 }
             }
