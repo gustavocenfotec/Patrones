@@ -126,17 +126,23 @@ public class ValidacionesUI {
     public Respuesta validacionProfesor(String nombre, int identificacion, String email, String departamento) {
         String regexStrings = "^([^a-z]*)$";
         String regexInt = "^([^0-9]*)$";
+        String regexEmail="^[a-zA-Z0-9._%±]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$";
+
+
         Pattern patternString = Pattern.compile(regexStrings);
         Pattern patternInt = Pattern.compile(regexInt);
+        Pattern patternEmail = Pattern.compile(regexEmail);
+
         Matcher matcherString = patternString.matcher(nombre);
+        Matcher matcherEmail = patternEmail.matcher(email);
+
         if (!nombre.equals("") && !matcherString.matches()) {
             if (identificacion == 0) {
                 String respuestaEscrita="Revisar el espacio de identificacion esta vacio o con algun numero";
                 Respuesta respuesta= new Respuesta(false,respuestaEscrita);
                 return respuesta;
             } else {
-                matcherString = patternString.matcher(email);
-                if (!email.equals("") && !matcherString.matches()) {
+                if (!email.equals("") && matcherEmail.matches()) {
                     matcherString = patternString.matcher(departamento);
                     if (!departamento.equals("") && !matcherString.matches()) {
                         Respuesta respuesta= new Respuesta(true);
@@ -164,17 +170,24 @@ public class ValidacionesUI {
     public Respuesta validacionEstudiante(String nombre, int identificacion, String email, String anno, String mes, String dia) {
         String regexStrings = "^([^a-z]*)$";
         String regexInt = "^([^0-9]*)$";
+        String regexEmail="^[a-zA-Z0-9._%±]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$";
+
+
         Pattern patternString = Pattern.compile(regexStrings);
         Pattern patternInt = Pattern.compile(regexInt);
+        Pattern patternEmail = Pattern.compile(regexEmail);
+
         Matcher matcherString = patternString.matcher(nombre);
+        Matcher matcherEmail = patternEmail.matcher(email);
+
+
         if (!nombre.equals("") && !matcherString.matches()) {
             if (identificacion == 0) {
                 String respuestaEscrita="Revisar el espacio de identificacion esta vacio o con alguna letra";
                 Respuesta respuesta= new Respuesta(false,respuestaEscrita);
                 return respuesta;
             } else {
-                matcherString = patternString.matcher(email);
-                if (!email.equals("") && !matcherString.matches()) {
+                if (!email.equals("") && matcherEmail.matches()) {
                     Matcher matcherInt = patternString.matcher(anno);
                     if (!anno.equals("") && matcherInt.matches()) {
                         matcherInt = patternString.matcher(mes);

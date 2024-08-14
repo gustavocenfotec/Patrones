@@ -5,6 +5,7 @@ import View.ViewPersonas.Profesores.profesorOpciones;
 import View.ViewsAdministrativo.Curso.cursoOpciones;
 import View.ViewsAdministrativo.Grupo.grupoOpciones;
 import View.ViewsAdministrativo.GrupoCurso.grupoCursoOpciones;
+import View.ViewsAdministrativo.GrupoCurso.menuGruposCursoUI;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -62,7 +63,7 @@ public class MenuGeneralUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                new grupoCursoOpciones();
+                new menuGruposCursoUI();
             }
         });
         salirDelSistemaButton.addActionListener(new ActionListener() {

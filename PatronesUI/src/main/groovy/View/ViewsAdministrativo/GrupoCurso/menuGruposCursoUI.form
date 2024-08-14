@@ -87,7 +87,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="#ID Grupo Curso Unico"/>
+          <text value="0"/>
         </properties>
       </component>
       <component id="74465" class="javax.swing.JLabel">

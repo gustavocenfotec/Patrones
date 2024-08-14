@@ -95,7 +95,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="Descripcion rapida"/>
+          <text value=""/>
         </properties>
       </component>
       <component id="cd965" class="javax.swing.JTextField" binding="nombre">
@@ -105,7 +105,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="Nombre de la Seccion"/>
+          <text value=""/>
         </properties>
       </component>
       <component id="1c5cd" class="javax.swing.JTextField" binding="id">
@@ -115,7 +115,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="#ID GRUPO"/>
+          <text value="0"/>
         </properties>
       </component>
       <scrollpane id="46a64">
